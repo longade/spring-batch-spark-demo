@@ -1,0 +1,15 @@
+spring:
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:mytmpdb;INIT=RUNSCRIPT FROM 'classpath:init.sql'
+    username: sa
+    password: ""
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
