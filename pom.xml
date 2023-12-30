@@ -15,7 +15,9 @@
 	<description>Batch demo project for Spring Batch</description>
 	<properties>
 		<java.version>11</java.version>
+		<spring-cloud-gcp.version>3.7.5</spring-cloud-gcp.version>
 		<apache-spark.version>3.5.0</apache-spark.version>
+		<spark-bq-connector.version>0.35.0</spark-bq-connector.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -44,6 +46,16 @@
 			<artifactId>spring-batch-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>spring-cloud-gcp-starter</artifactId>
+			<version>${spring-cloud-gcp.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>spring-cloud-gcp-storage</artifactId>
+			<version>${spring-cloud-gcp.version}</version>
+		</dependency>
 
 		<!-- apache spark -->
 		<dependency>
@@ -56,6 +68,11 @@
 			<artifactId>spark-sql_2.13</artifactId>
 			<version>${apache-spark.version}</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.cloud.spark</groupId>
+			<artifactId>spark-bigquery_2.13</artifactId>
+			<version>${spark-bq-connector.version}</version>
 		</dependency>
 	</dependencies>
 

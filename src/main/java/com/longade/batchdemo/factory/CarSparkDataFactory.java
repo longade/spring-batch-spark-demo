@@ -5,8 +5,6 @@ import com.longade.batchdemo.util.ClassFieldsUtils;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
-import org.apache.spark.sql.Row;
-import org.apache.spark.sql.SparkSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
