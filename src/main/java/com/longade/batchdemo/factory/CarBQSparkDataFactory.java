@@ -6,7 +6,7 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.springframework.stereotype.Component;
 
-@Component
+// @Component
 public class CarBQSparkDataFactory extends SparkDataFactory<Car> {
 
     private static final String DATASET_NAME = "TMP_DB_SPARK";

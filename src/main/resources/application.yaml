@@ -4,6 +4,17 @@ spring:
       initialize-schema: always
     job:
       enabled: true
+      reader:
+        sql:
+          name: pagingReader
+          query: "select * from cars"
+          selectClause: "select *"
+          fromClause: "from cars"
+          whereClause: "where 1 = 1"
+          sortKey: "car_id"
+          order: ASCENDING
+          pageSize: 100
+          fetchSize: 100
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:mytmpdb;INIT=RUNSCRIPT FROM 'classpath:init.sql'

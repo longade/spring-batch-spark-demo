@@ -29,14 +29,10 @@ public class PersonCarItemReader implements ItemReader<PersonCar> {
     @Autowired
     private CarSparkDataFactory carSparkDataFactory;
 
-    @Autowired
-    private CarBQSparkDataFactory carBQSparkDataFactory;
+    // @Autowired
+    // private CarBQSparkDataFactory carBQSparkDataFactory;
 
-    private List<PersonCar> initializeList() {
-        Dataset<Person> peopleDataset = personSparkDataFactory.readData();
-        Dataset<Car> carsBQDataset = carBQSparkDataFactory.readData();
-        Dataset<Car> carsDataset = carSparkDataFactory.readData();
-
+    private Dataset<Car> joinCarsDataset(Dataset<Car> carsBQDataset, Dataset<Car> carsDataset) {
         Dataset<Car> joinedCarsDataset = carsBQDataset
                 .join(
                         carsDataset,
@@ -53,13 +49,24 @@ public class PersonCarItemReader implements ItemReader<PersonCar> {
 
         joinedCarsDataset.show();
 
+        return joinedCarsDataset;
+    }
+
+    private List<PersonCar> initializeList() {
+        Dataset<Person> peopleDataset = personSparkDataFactory.readData();
+        // Dataset<Car> carsBQDataset = carBQSparkDataFactory.readData();
+        Dataset<Car> carsDataset = carSparkDataFactory.readData();
+
+        // Dataset<Car> joinedCarsDataset = joinCarsDataset(carsBQDataset, carsDataset);
+
         Dataset<PersonCar> peopleCarDataset = peopleDataset
                 .join(
-                        joinedCarsDataset,
-                        peopleDataset.col("personId").equalTo(joinedCarsDataset.col("personId")),
+                        carsDataset,
+                        peopleDataset.col("personId").equalTo(carsDataset.col("personId")),
                         "inner"
                 )
-                .drop(joinedCarsDataset.col("personId"))
+                .drop(carsDataset.col("personId"))
+                .orderBy(peopleDataset.col("personId"), carsDataset.col("carId"))
                 .as(Encoders.bean(PersonCar.class));
 
         peopleCarDataset.show();
