@@ -9,6 +9,11 @@ spring:
     url: jdbc:h2:mem:mytmpdb;INIT=RUNSCRIPT FROM 'classpath:init.sql'
     username: sa
     password: ""
+  mysql-datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:3306/tmpdb_spark
+    username: tmpdb_spark_user
+    password: tmpdb_spark_user
   h2:
     console:
       enabled: true

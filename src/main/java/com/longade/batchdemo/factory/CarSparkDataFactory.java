@@ -1,30 +1,41 @@
 package com.longade.batchdemo.factory;
 
+import com.longade.batchdemo.model.Car;
+import com.longade.batchdemo.util.ClassFieldsUtils;
+import com.zaxxer.hikari.HikariDataSource;
 import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Row;
-import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.Encoders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-@Component
-public class CarSparkDataFactory {
+import javax.sql.DataSource;
 
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/tmpdb_spark";
-    private static final String USERNAME = "tmpdb_spark_user";
-    private static final String PASSWORD = "tmpdb_spark_user";
+@Component
+public class CarSparkDataFactory extends SparkDataFactory<Car> {
 
     @Autowired
-    private SparkSession sparkSession;
+    @Qualifier("mysqlDataSource")
+    private DataSource dataSource;
 
-    public Dataset<Row> readData() {
-        return sparkSession.read()
+    public Dataset<Car> readData() {
+        HikariDataSource ds = (HikariDataSource) dataSource;
+
+        Dataset<Car> dataset = sparkSession.read()
                 .format("jdbc")
-                .option("url", JDBC_URL)
-                .option("user", USERNAME)
-                .option("password", PASSWORD)
+                .option("url", ds.getJdbcUrl())
+                .option("user", ds.getUsername())
+                .option("password", ds.getPassword())
                 // .option("dbtable", "cars")
                 .option("query", "select * from cars")
-                .load();
+                .load()
+                .withColumnsRenamed(ClassFieldsUtils.getFieldsMapping(Car.class))
+                .as(Encoders.bean(Car.class));
+
+        dataset.show();
+
+        return dataset;
+
     }
 
 }

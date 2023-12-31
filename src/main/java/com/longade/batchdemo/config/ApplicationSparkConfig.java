@@ -13,6 +13,8 @@ public class ApplicationSparkConfig {
     public SparkConf sparkConf() {
         return new SparkConf()
                 .setAppName("test-spark")
+                .set("viewsEnabled", "true")
+                .set("materializationDataset", "TMP_DB_SPARK")
                 .setMaster("local");
     }
 
