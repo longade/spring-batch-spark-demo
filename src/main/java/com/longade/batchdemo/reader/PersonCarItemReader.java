@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+// @Component
 public class PersonCarItemReader implements ItemReader<PersonCar> {
 
     private List<PersonCar> personCarList;

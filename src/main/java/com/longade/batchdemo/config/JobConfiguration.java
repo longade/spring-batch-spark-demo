@@ -1,6 +1,8 @@
 package com.longade.batchdemo.config;
 
 import com.longade.batchdemo.model.PersonCar;
+import com.longade.batchdemo.model.PersonValues;
+import com.longade.batchdemo.model.PersonValuesSplit;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -23,7 +25,7 @@ public class JobConfiguration {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
-    @Bean
+    /*@Bean
     public Job storePeopleJob(Step step1) {
         return this.jobBuilderFactory.get("storePeopleJob")
                 .start(step1)
@@ -35,6 +37,24 @@ public class JobConfiguration {
         return this.stepBuilderFactory
                 .get("step1")
                 .<PersonCar, PersonCar> chunk(3)
+                .reader(reader)
+                .processor(processor)
+                .writer(writer)
+                .build();
+    }*/
+
+    @Bean
+    public Job personValuesJob(Step step2) {
+        return this.jobBuilderFactory.get("personValuesJob")
+                .start(step2)
+                .build();
+    }
+
+    @Bean
+    public Step step2(ItemReader<PersonValuesSplit> reader, ItemProcessor<PersonValuesSplit, PersonValuesSplit> processor, FlatFileItemWriter<PersonValuesSplit> writer) {
+        return this.stepBuilderFactory
+                .get("step2")
+                .<PersonValuesSplit, PersonValuesSplit> chunk(3)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
